@@ -17,11 +17,11 @@ struct DigitalGear {
 };
 
 // Fonction pour ajouter une tâche
-void AjouterTache(struct DigitalGear digitalgear[], int index) {
-      sprintf(digitalgear[index].id, "T%03d", compteurID);
-      compteurID++; // Incrémentation du compteur
+void AjouterTache(struct DigitalGear digitalgear[], int index,int *compteurID) {
+      sprintf(digitalgear[index].id, "I%02d",*compteurID);
+      compteurID++;
 
-    printf("ID généré : %s\n", digitalgear[index].id);
+    printf("ID genere : %s\n", digitalgear[index].id);
 
     printf("Entrer le titre : ");
     scanf(" %[^\n]", digitalgear[index].titre);
@@ -35,7 +35,7 @@ void AjouterTache(struct DigitalGear digitalgear[], int index) {
     printf("Entrer la priorite (0 = HIGH, 1 = LOW) : ");
     scanf("%d", &digitalgear[index].preorite);
 
-    printf("Tâche ajoutée avec succès !\n\n");
+    printf("Tache ajoutee avec succes !\n\n");
 }
 
 // Fonction pour afficher toutes les tâches
@@ -59,9 +59,7 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
     char idRecherche[7];
     printf("Entrer l'ID de la tâche à modifier : ");
     scanf("%s", idRecherche);
-    printfr("quel champ qui doit modifier !");
-    scanf
-
+    
     for (int i = 0; i < index; i++) {
         if (strcmp(digitalGear[i].id, idRecherche) == 0) {
 
@@ -89,6 +87,7 @@ int main() {
     int choix;
     struct DigitalGear digitalgear[1000];
     int index = 0;
+    int compteurID = 1;
 
     do {
         printf("\n******************** Gestion des Taches *********************\n");
@@ -104,7 +103,7 @@ int main() {
         switch (choix) {
             case 1:
                 if (index < 1000) {
-                    AjouterTache(digitalgear, index);
+                    AjouterTache(digitalgear, index,&compteurID);
                     index++;
                 } else {
                     printf("La liste des tâches est pleine !\n");
