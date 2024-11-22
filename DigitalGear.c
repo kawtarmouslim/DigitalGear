@@ -17,12 +17,12 @@ struct DigitalGear {
 };
 
 // Fonction pour ajouter une tâche
-void AjouterTache(struct DigitalGear digitalgear[], int index,int *compteurID) {
-      sprintf(digitalgear[index].id, "I%02d",*compteurID);
-      compteurID++;
-
-    printf("ID genere : %s\n", digitalgear[index].id);
-
+void AjouterTache(struct DigitalGear digitalgear[], int index, int *compteurID) {
+    // Générer un ID formaté basé sur le compteur actuel
+    sprintf(digitalgear[index].id, "I%02d", *compteurID);
+    (*compteurID)++; // Incrémentation correcte du compteur via le pointeur
+    printf("ID : %s\n", digitalgear[index].id);
+    // Lecture des autres champs
     printf("Entrer le titre : ");
     scanf(" %[^\n]", digitalgear[index].titre);
 
@@ -38,6 +38,7 @@ void AjouterTache(struct DigitalGear digitalgear[], int index,int *compteurID) {
     printf("Tache ajoutee avec succes !\n\n");
 }
 
+
 // Fonction pour afficher toutes les tâches
 void Affichertache(struct DigitalGear digitalGear[], int nbr) {
     if (nbr == 0) {
@@ -45,7 +46,7 @@ void Affichertache(struct DigitalGear digitalGear[], int nbr) {
         return;
     }
     for (int i = 0; i < nbr; i++) {
-        printf("\nTâche %d :\n", i + 1);
+        printf("\nTache %d :\n", i + 1);
         printf("ID : %s\n", digitalGear[i].id);
         printf("Titre : %s\n", digitalGear[i].titre);
         printf("Description : %s\n", digitalGear[i].description);
@@ -57,13 +58,10 @@ void Affichertache(struct DigitalGear digitalGear[], int nbr) {
 // Fonction pour modifier une tâche
 void Modifiertache(struct DigitalGear digitalGear[], int index) {
     char idRecherche[7];
-    printf("Entrer l'ID de la tâche à modifier : ");
+    printf("Entrer ID de la tache A modifier : ");
     scanf("%s", idRecherche);
-    
     for (int i = 0; i < index; i++) {
-        if (strcmp(digitalGear[i].id, idRecherche) == 0) {
-
-
+        if (strcmp(digitalGear[i].id, idRecherche) == 0) {//strcmp cette foncton comparer les chaine de caractere
             printf("Entrer le nouveau titre : ");
             scanf(" %s", digitalGear[i].titre);
 
@@ -80,14 +78,29 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
            
         }
     }
-    printf("Tâche avec ID %s non trouvee.\n", idRecherche);
+    printf("Tache avec ID %s non trouvee.\n", idRecherche);
 }
+ //la fonction pour supprimer une tache
+  void SupprimerTache(struct DigitalGear digitalGear[], int *nbrt, const char *idRecherche) {
+    for (int i = 0; i < *nbrt; i++) {
+         {
+            for (int j = i; j < *nbrt - 1; j++) {
+                if (strcmp(digitalGear[i].id, idRecherche) == 0)
+                digitalGear[j] = digitalGear[j + 1]; // Décaler les tâches
+            }
+        }
+    }
+    (*nbrt)--; // Réduire le nombre de tâches
+   printf("Tache avec ID %s supprimee avec succes !\n", idRecherche);
+}
+
 
 int main() {
     int choix;
     struct DigitalGear digitalgear[1000];
     int index = 0;
     int compteurID = 1;
+    char idRecherche[7];
 
     do {
         printf("\n******************** Gestion des Taches *********************\n");
@@ -117,8 +130,14 @@ int main() {
             case 3:
                 Modifiertache(digitalgear,index);
                 break;
-
             case 4:
+                 
+                    printf("Entrer ID de la tAche a supprimer : ");
+                    scanf("%s", idRecherche);
+                    SupprimerTache(digitalgear, &index, idRecherche);
+               
+                break;
+            case 5:
                 printf("Au revoir !\n");
                 break;
 
