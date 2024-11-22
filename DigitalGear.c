@@ -94,13 +94,27 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
    printf("Tache avec ID %s supprimee avec succes !\n", idRecherche);
 }
 
-
+//fonction permette filter par prioriter
+void filtrerParPriorite(struct DigitalGear digitalGear[], int *nbrt, const char *propriterecherche) {
+    for (int i = 0; i < *nbrt; i++) {
+        // Comparaison avec les chaînes "High" ou "Low"
+        if ((digitalGear[i].preorite == HIGH && strcmp(propriterecherche, "High") == 0) ||
+            (digitalGear[i].preorite == LOW && strcmp(propriterecherche, "Low") == 0)) {
+            printf("Titre : %s\n", digitalGear[i].titre);
+            printf("Description : %s\n", digitalGear[i].description);
+            printf("Date : %02d/%02d/%04d\n", digitalGear[i].jours, digitalGear[i].mois, digitalGear[i].annee);
+            printf("Priorite : %s\n", digitalGear[i].preorite == HIGH ? "High" : "Low");
+        }
+    }
+}
 int main() {
     int choix;
     struct DigitalGear digitalgear[1000];
     int index = 0;
     int compteurID = 1;
     char idRecherche[7];
+    char propriorite[6];
+  
 
     do {
         printf("\n******************** Gestion des Taches *********************\n");
@@ -138,6 +152,12 @@ int main() {
                
                 break;
             case 5:
+                printf("Entrez la priorit (High/Low) : ");
+                scanf("%s", propriorite);
+                filtrerParPriorite(digitalgear, &index, propriorite); 
+                break; 
+                break;
+            case 6:
                 printf("Au revoir !\n");
                 break;
 
