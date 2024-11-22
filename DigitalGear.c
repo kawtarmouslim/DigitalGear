@@ -82,9 +82,9 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
 }
  //la fonction pour supprimer une tache
   void SupprimerTache(struct DigitalGear digitalGear[], int *nbrt, const char *idRecherche) {
-    for (int i = 0; i < *nbrt; i++) {
+    for (int i = 0; i < *nbrt; i++) {// pour trouve la tâche à supprimer.
          {
-            for (int j = i; j < *nbrt - 1; j++) {
+            for (int j = i; j < *nbrt - 1; j++) {//pour décale les tâches restantes pour remplir l'espace vide.
                 if (strcmp(digitalGear[i].id, idRecherche) == 0)
                 digitalGear[j] = digitalGear[j + 1]; // Décaler les tâches
             }
@@ -98,6 +98,8 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
 void filtrerParPriorite(struct DigitalGear digitalGear[], int *nbrt, const char *propriterecherche) {
     for (int i = 0; i < *nbrt; i++) {
         // Comparaison avec les chaînes "High" ou "Low"
+        //Vérifie si la priorité de la tâche à l'index i est HIGH
+        //Vérifie si l'utilisateur a saisi "High".
         if ((digitalGear[i].preorite == HIGH && strcmp(propriterecherche, "High") == 0) ||
             (digitalGear[i].preorite == LOW && strcmp(propriterecherche, "Low") == 0)) {
             printf("Titre : %s\n", digitalGear[i].titre);
