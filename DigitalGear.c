@@ -1,13 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-
-// Définition de l'énumération
 enum Preorite {
     HIGH = 0,
     LOW = 1
 };
-
-// Structure DigitalGear
 struct DigitalGear {
     char id[7];
     char titre[30];
@@ -15,14 +11,11 @@ struct DigitalGear {
     int jours, mois, annee;
     enum Preorite preorite;
 };
+     void AjouterTache(struct DigitalGear digitalgear[], int index, int *compteurID) {
 
-// Fonction pour ajouter une tâche
-void AjouterTache(struct DigitalGear digitalgear[], int index, int *compteurID) {
-    // Générer un ID formaté basé sur le compteur actuel
     sprintf(digitalgear[index].id, "I%02d", *compteurID);
-    (*compteurID)++; // Incrémentation correcte du compteur via le pointeur
+    (*compteurID)++;
     printf("ID : %s\n", digitalgear[index].id);
-    // Lecture des autres champs
     printf("Entrer le titre : ");
     scanf(" %[^\n]", digitalgear[index].titre);
 
@@ -38,12 +31,9 @@ void AjouterTache(struct DigitalGear digitalgear[], int index, int *compteurID) 
     printf("Tache ajoutee avec succes !\n\n");
 }
 
-
-// Fonction pour afficher toutes les tâches
 void Affichertache(struct DigitalGear digitalGear[], int nbr) {
     if (nbr == 0) {
         printf("Pas de tache enregistree !\n");
-        return;
     }
     for (int i = 0; i < nbr; i++) {
         printf("\nTache %d :\n", i + 1);
@@ -55,51 +45,63 @@ void Affichertache(struct DigitalGear digitalGear[], int nbr) {
     }
 }
 
-// Fonction pour modifier une tâche
+
 void Modifiertache(struct DigitalGear digitalGear[], int index) {
     char idRecherche[7];
-    printf("Entrer ID de la tache A modifier : ");
+    printf("Entrer ID de la tache a modifier : ");
     scanf("%s", idRecherche);
     for (int i = 0; i < index; i++) {
-        if (strcmp(digitalGear[i].id, idRecherche) == 0) {//strcmp cette foncton comparer les chaine de caractere
+        if (strcmp(digitalGear[i].id, idRecherche) == 0) {
+            int choix;
+            printf("1.Modifier titre\n 2.Modifier description \n 3.Modifier la date (jj/mm/aaaa)\n 4.Modifier priorite\n");
+            printf("Entrer votre choix :");
+            scanf("%d",&choix);
+            switch (choix)
+            {
+            case 1:
             printf("Entrer le nouveau titre : ");
             scanf(" %s", digitalGear[i].titre);
+                break;
+            case 2:
+                 printf("Entrer la nouvelle description : ");
+                 scanf(" %[^\n]", digitalGear[i].description);
+                break;
+            case 3:
+               
+                 printf("Entrer la nouvelle date (jj/mm/aaaa) : ");
+                  scanf("%d/%d/%d", &digitalGear[i].jours, &digitalGear[i].mois, &digitalGear[i].annee);
+                break;
+            case 4:
+                 printf("Entrer la nouvelle priorite (0 = HIGH, 1 = LOW) : ");
+                 scanf("%d", &digitalGear[i].preorite);
+                break;
+            default:
+            printf("le choix invalid");
+                break;
+            }
 
-            printf("Entrer la nouvelle description : ");
-            scanf(" %[^\n]", digitalGear[i].description);
-
-            printf("Entrer la nouvelle date (jj/mm/aaaa) : ");
-            scanf("%d/%d/%d", &digitalGear[i].jours, &digitalGear[i].mois, &digitalGear[i].annee);
-
-            printf("Entrer la nouvelle priorite (0 = HIGH, 1 = LOW) : ");
-            scanf("%d", &digitalGear[i].preorite);
-
-            printf("Tache modifiee avec succes !\n");
+           
            
         }
     }
     printf("Tache avec ID %s non trouvee.\n", idRecherche);
 }
- //la fonction pour supprimer une tache
+ 
   void SupprimerTache(struct DigitalGear digitalGear[], int *nbrt, const char *idRecherche) {
-    for (int i = 0; i < *nbrt; i++) {// pour trouve la tâche à supprimer.
+    for (int i = 0; i < *nbrt; i++) {
          {
-            for (int j = i; j < *nbrt - 1; j++) {//pour décale les tâches restantes pour remplir l'espace vide.
+            for (int j = i; j < *nbrt - 1; j++) {
                 if (strcmp(digitalGear[i].id, idRecherche) == 0)
-                digitalGear[j] = digitalGear[j + 1]; // Décaler les tâches
+                digitalGear[j] = digitalGear[j + 1]; 
             }
         }
     }
-    (*nbrt)--; // Réduire le nombre de tâches
+    (*nbrt)--; 
    printf("Tache avec ID %s supprimee avec succes !\n", idRecherche);
 }
 
-//fonction permette filter par prioriter
 void filtrerParPriorite(struct DigitalGear digitalGear[], int *nbrt, const char *propriterecherche) {
     for (int i = 0; i < *nbrt; i++) {
-        // Comparaison avec les chaînes "High" ou "Low"
-        //Vérifie si la priorité de la tâche à l'index i est HIGH
-        //Vérifie si l'utilisateur a saisi "High".
         if ((digitalGear[i].preorite == HIGH && strcmp(propriterecherche, "High") == 0) ||
             (digitalGear[i].preorite == LOW && strcmp(propriterecherche, "Low") == 0)) {
             printf("Titre : %s\n", digitalGear[i].titre);
@@ -157,7 +159,7 @@ int main() {
                 printf("Entrez la priorit (High/Low) : ");
                 scanf("%s", propriorite);
                 filtrerParPriorite(digitalgear, &index, propriorite); 
-                break; 
+                
                 break;
             case 6:
                 printf("Au revoir !\n");
