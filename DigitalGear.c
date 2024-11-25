@@ -71,7 +71,7 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
                  printf("Entrer la nouvelle date (jj/mm/aaaa) : ");
                   scanf("%d/%d/%d", &digitalGear[i].jours, &digitalGear[i].mois, &digitalGear[i].annee);
                 break;
-            case 4:
+             case 4:
                  printf("Entrer la nouvelle priorite (0 = HIGH, 1 = LOW) : ");
                  scanf("%d", &digitalGear[i].preorite);
                 break;
@@ -87,18 +87,21 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
     printf("Tache avec ID %s non trouvee.\n", idRecherche);
 }
  
-  void SupprimerTache(struct DigitalGear digitalGear[], int *nbrt, const char *idRecherche) {
+void SupprimerTache(struct DigitalGear digitalGear[], int *nbrt, const char *idRecherche) {
     for (int i = 0; i < *nbrt; i++) {
-         {
+        if (strcmp(digitalGear[i].id, idRecherche) == 0) {
             for (int j = i; j < *nbrt - 1; j++) {
-                if (strcmp(digitalGear[i].id, idRecherche) == 0)
-                digitalGear[j] = digitalGear[j + 1]; 
+                digitalGear[j] = digitalGear[j + 1];
             }
+
+            (*nbrt)--; 
+            printf("Tache avec ID '%s' supprimee avec succes.\n", idRecherche);
+            return;
         }
     }
-    (*nbrt)--; 
-   printf("Tache avec ID %s supprimee avec succes !\n", idRecherche);
+    printf("ID '%s' introuvable.\n", idRecherche);
 }
+   
 
 void filtrerParPriorite(struct DigitalGear digitalGear[], int *nbrt, const char *propriterecherche) {
     for (int i = 0; i < *nbrt; i++) {
@@ -166,7 +169,7 @@ int main() {
                 break;
 
             default:
-                printf("Choix invalide. Veuillez réessayer.\n");
+                printf("Choix invalide. Veuillez reessayer.\n");
         }
     } while (choix != 6);
 
