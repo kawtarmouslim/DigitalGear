@@ -8,11 +8,10 @@ struct DigitalGear {
     char id[7];
     char titre[30];
     char description[50];
-    int jours, mois, annee;
+    char date[20];
     enum Preorite preorite;
 };
      void AjouterTache(struct DigitalGear digitalgear[], int index, int *compteurID) {
-
     sprintf(digitalgear[index].id, "I%02d", *compteurID);
     (*compteurID)++;
     printf("ID : %s\n", digitalgear[index].id);
@@ -22,8 +21,22 @@ struct DigitalGear {
     printf("Entrer la description (max 50 caracteres) : ");
     scanf(" %[^\n]", digitalgear[index].description);
 
-    printf("Entrer la date (jj/mm/aaaa) : ");
-    scanf("%d/%d/%d", &digitalgear[index].jours, &digitalgear[index].mois, &digitalgear[index].annee);
+    while (1)
+    {
+        int jours,mois,anne;
+       printf("Enter la date :");
+       scanf("%11s",digitalgear[index].date);
+       if (sscanf(digitalgear[index].date,"%2d/%2d/%4d",& jours,&mois,&anne) != 3 ||
+          jours < 1 || jours > 31 ||
+          mois < 1 || mois > 12  ||
+          anne < 2000 || anne > 2060 )
+       {
+             printf("\nInvalid forme. entrer la forme correct  MM/DD/YYYY format.\n");
+       }
+      
+        else break;
+    }
+    
 
     printf("Entrer la priorite (0 = HIGH, 1 = LOW) : ");
     scanf("%d", &digitalgear[index].preorite);
@@ -40,8 +53,8 @@ void Affichertache(struct DigitalGear digitalGear[], int nbr) {
         printf("ID : %s\n", digitalGear[i].id);
         printf("Titre : %s\n", digitalGear[i].titre);
         printf("Description : %s\n", digitalGear[i].description);
-        printf("Date : %02d/%02d/%04d\n", digitalGear[i].jours, digitalGear[i].mois, digitalGear[i].annee);
-        printf("Priorité : %s\n", digitalGear[i].preorite == HIGH ? "HIGH" : "LOW");
+        printf("Date : %sn\n", digitalGear[i].date);
+        printf("Priorite : %s\n", digitalGear[i].preorite == HIGH ? "HIGH" : "LOW");
     }
 }
 
@@ -69,7 +82,7 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
             case 3:
                
                  printf("Entrer la nouvelle date (jj/mm/aaaa) : ");
-                  scanf("%d/%d/%d", &digitalGear[i].jours, &digitalGear[i].mois, &digitalGear[i].annee);
+                  scanf("%s", digitalGear[i].date);
                 break;
              case 4:
                  printf("Entrer la nouvelle priorite (0 = HIGH, 1 = LOW) : ");
@@ -105,12 +118,14 @@ void SupprimerTache(struct DigitalGear digitalGear[], int *nbrt, const char *idR
 
 void filtrerParPriorite(struct DigitalGear digitalGear[], int *nbrt, const char *propriterecherche) {
     for (int i = 0; i < *nbrt; i++) {
-        if ((digitalGear[i].preorite == HIGH && strcmp(propriterecherche, "High") == 0) ||
-            (digitalGear[i].preorite == LOW && strcmp(propriterecherche, "Low") == 0)) {
+        if ((digitalGear[i].preorite == HIGH && strcasecmp(propriterecherche, "High") == 0) ||
+            (digitalGear[i].preorite == LOW && strcasecmp(propriterecherche, "Low") == 0)) {
+            printf("Id : %s\n", digitalGear[i].id);
             printf("Titre : %s\n", digitalGear[i].titre);
             printf("Description : %s\n", digitalGear[i].description);
-            printf("Date : %02d/%02d/%04d\n", digitalGear[i].jours, digitalGear[i].mois, digitalGear[i].annee);
+            printf("Date : %s\n", digitalGear[i].date);  
             printf("Priorite : %s\n", digitalGear[i].preorite == HIGH ? "High" : "Low");
+            printf("----------------------------\n");
         }
     }
 }
