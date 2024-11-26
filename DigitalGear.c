@@ -4,12 +4,17 @@ enum Preorite {
     HIGH = 0,
     LOW = 1
 };
+enum Status {
+    COMPLETE = 1,
+    INCOMPLETE = 0
+};
 struct DigitalGear {
     char id[7];
     char titre[30];
     char description[50];
     char date[20];
     enum Preorite preorite;
+    enum Status status;
 };
      void AjouterTache(struct DigitalGear digitalgear[], int index, int *compteurID) {
     sprintf(digitalgear[index].id, "I%02d", *compteurID);
@@ -40,6 +45,8 @@ struct DigitalGear {
 
     printf("Entrer la priorite (0 = HIGH, 1 = LOW) : ");
     scanf("%d", &digitalgear[index].preorite);
+    printf("Entrer le status (0 = incompete, 1 = complete) : ");
+    scanf("%d", &digitalgear[index].status);
 
     printf("Tache ajoutee avec succes !\n\n");
 }
@@ -55,6 +62,7 @@ void Affichertache(struct DigitalGear digitalGear[], int nbr) {
         printf("Description : %s\n", digitalGear[i].description);
         printf("Date : %sn\n", digitalGear[i].date);
         printf("Priorite : %s\n", digitalGear[i].preorite == HIGH ? "HIGH" : "LOW");
+        printf("Status :%s\n",digitalGear[i].status== COMPLETE ? "complete" :"incomplete");
     }
 }
 
@@ -66,7 +74,7 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
     for (int i = 0; i < index; i++) {
         if (strcmp(digitalGear[i].id, idRecherche) == 0) {
             int choix;
-            printf("1.Modifier titre\n 2.Modifier description \n 3.Modifier la date (jj/mm/aaaa)\n 4.Modifier priorite\n");
+            printf("1.Modifier titre\n 2.Modifier description \n 3.Modifier la date (jj/mm/aaaa)\n 4.Modifier priorite\n 5.Modifier sattus \n");
             printf("Entrer votre choix :");
             scanf("%d",&choix);
             switch (choix)
@@ -87,6 +95,10 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
              case 4:
                  printf("Entrer la nouvelle priorite (0 = HIGH, 1 = LOW) : ");
                  scanf("%d", &digitalGear[i].preorite);
+                break;
+            case 5:
+                 printf("Entrer la nouvelle status (0 = incomplete, 1 = complete) : ");
+                 scanf("%d", &digitalGear[i].status);
                 break;
             default:
             printf("le choix invalid");
@@ -121,14 +133,24 @@ void filtrerParPriorite(struct DigitalGear digitalGear[], int *nbrt, const char 
         if ((digitalGear[i].preorite == HIGH && strcasecmp(propriterecherche, "High") == 0) ||
             (digitalGear[i].preorite == LOW && strcasecmp(propriterecherche, "Low") == 0)) {
             printf("Id : %s\n", digitalGear[i].id);
-            printf("Titre : %s\n", digitalGear[i].titre);
-            printf("Description : %s\n", digitalGear[i].description);
-            printf("Date : %s\n", digitalGear[i].date);  
             printf("Priorite : %s\n", digitalGear[i].preorite == HIGH ? "High" : "Low");
-            printf("----------------------------\n");
+            
         }
     }
 }
+void filterparstatus(struct DigitalGear digitalGear[], int *nbrt, const char *idstatus) {
+    for (int i = 0; i < *nbrt; i++) {
+        if ((digitalGear[i].status == COMPLETE && strcasecmp(idstatus, "complete") == 0) ||
+            (digitalGear[i].status == INCOMPLETE && strcasecmp(idstatus, "incomplete") == 0)) {
+            printf("Id : %s\n", digitalGear[i].id);
+            printf("Titre : %s\n", digitalGear[i].titre);
+            printf("Priorite : %s\n", digitalGear[i].preorite == HIGH ? "High" : "Low");
+            printf("Statut : %s\n", digitalGear[i].status == COMPLETE ? "Complete" : "Incomplete");
+        }
+    }
+}
+
+
 int main() {
     int choix;
     struct DigitalGear digitalgear[1000];
@@ -136,6 +158,7 @@ int main() {
     int compteurID = 1;
     char idRecherche[7];
     char propriorite[6];
+    char idstatus[6];
   
 
     do {
@@ -144,8 +167,9 @@ int main() {
         printf("2. Afficher la Liste des Taches\n");
         printf("3. Modifier une Tache\n");
         printf("4. Supprimer une Tache\n");
-        printf("5. Filtrer une Tache\n");
-        printf("6. Quitter\n");
+        printf("5. Filtrer une Tache par preorite\n");
+        printf("6. Filtrer une Tache par status\n");
+        printf("7. Quitter\n");
         printf("Votre choix : ");
         scanf("%d", &choix);
 
@@ -180,6 +204,11 @@ int main() {
                 
                 break;
             case 6:
+                printf("Entrez le statut (complete/incomplete) : ");
+                scanf("%s", idstatus);
+                filterparstatus(digitalgear, &index, idstatus);  
+                break;
+            case 7:
                 printf("Au revoir !\n");
                 break;
 
