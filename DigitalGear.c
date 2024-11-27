@@ -22,7 +22,7 @@ struct DigitalGear {
     printf("ID : %s\n", digitalgear[index].id);
     printf("Entrer le titre : ");
     scanf(" %[^\n]", digitalgear[index].titre);
-
+ 
     printf("Entrer la description (max 50 caracteres) : ");
     scanf(" %[^\n]", digitalgear[index].description);
 
@@ -34,7 +34,7 @@ struct DigitalGear {
        if (sscanf(digitalgear[index].date,"%2d/%2d/%4d",& jours,&mois,&anne) != 3 ||
           jours < 1 || jours > 31 ||
           mois < 1 || mois > 12  ||
-          anne < 2000 || anne > 2060 )
+          anne < 2024 || anne > 2060 )
        {
              printf("\nInvalid forme. entrer la forme correct  MM/DD/YYYY format.\n");
        }
@@ -51,7 +51,7 @@ struct DigitalGear {
     printf("Tache ajoutee avec succes !\n\n");
 }
 
-void Affichertache(struct DigitalGear digitalGear[], int nbr) {
+  void Affichertache(struct DigitalGear digitalGear[], int nbr) {
     if (nbr == 0) {
         printf("Pas de tache enregistree !\n");
     }
@@ -67,7 +67,7 @@ void Affichertache(struct DigitalGear digitalGear[], int nbr) {
 }
 
 
-void Modifiertache(struct DigitalGear digitalGear[], int index) {
+   void Modifiertache(struct DigitalGear digitalGear[], int index) {
     char idRecherche[7];
     printf("Entrer ID de la tache a modifier : ");
     scanf("%s", idRecherche);
@@ -112,7 +112,7 @@ void Modifiertache(struct DigitalGear digitalGear[], int index) {
     printf("Tache avec ID %s non trouvee.\n", idRecherche);
 }
  
-void SupprimerTache(struct DigitalGear digitalGear[], int *nbrt, const char *idRecherche) {
+  void SupprimerTache(struct DigitalGear digitalGear[], int *nbrt, const char *idRecherche) {
     for (int i = 0; i < *nbrt; i++) {
         if (strcmp(digitalGear[i].id, idRecherche) == 0) {
             for (int j = i; j < *nbrt - 1; j++) {
@@ -138,17 +138,7 @@ void filtrerParPriorite(struct DigitalGear digitalGear[], int *nbrt, const char 
         }
     }
 }
-void filterparstatus(struct DigitalGear digitalGear[], int *nbrt, const char *idstatus) {
-    for (int i = 0; i < *nbrt; i++) {
-        if ((digitalGear[i].status == COMPLETE && strcasecmp(idstatus, "complete") == 0) ||
-            (digitalGear[i].status == INCOMPLETE && strcasecmp(idstatus, "incomplete") == 0)) {
-            printf("Id : %s\n", digitalGear[i].id);
-            printf("Titre : %s\n", digitalGear[i].titre);
-            printf("Priorite : %s\n", digitalGear[i].preorite == HIGH ? "High" : "Low");
-            printf("Statut : %s\n", digitalGear[i].status == COMPLETE ? "Complete" : "Incomplete");
-        }
-    }
-}
+
 
 
 int main() {
